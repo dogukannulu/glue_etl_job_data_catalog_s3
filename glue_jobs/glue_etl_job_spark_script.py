@@ -72,10 +72,10 @@ df_prepared = prepare_dataframe(df_spark)
 df_joined = join_dataframes(df_prepared)
 df_final = create_final_dataframe(df_joined)
 
-# From df to glue dynamic frame
+# From Spark dataframe to glue dynamic frame
 glue_dynamic_frame_final = DynamicFrame.fromDF(df_final, glueContext, "glue_etl")
 
-# Example: Write the data in the DynamicFrame to a location in Amazon S3 and a table for it in the AWS Glue Data Catalog
+# Write the data in the DynamicFrame to a location in Amazon S3 and a table for it in the AWS Glue Data Catalog
 s3output = glueContext.getSink(
   path="s3://aws-glue-etl-job-spark/ufo_reports_target_parquet",
   connection_type="s3",
