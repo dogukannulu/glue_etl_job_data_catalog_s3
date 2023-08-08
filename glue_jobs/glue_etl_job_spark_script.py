@@ -17,9 +17,9 @@ spark = glueContext.spark_session
 job = Job(glueContext)
 job.init(args['JOB_NAME'], args)
 
-glue_dynamic_frame = glueContext.create_dynamic_frame.from_catalog(database='glue-etl-from-csv-to-parquet', table_name='ufo_reports_source_csv')
+glue_dynamic_frame_initial = glueContext.create_dynamic_frame.from_catalog(database='glue-etl-from-csv-to-parquet', table_name='ufo_reports_source_csv')
 
-df_spark = glue_dynamic_frame.toDF()
+df_spark = glue_dynamic_frame_initial.toDF()
 
 
 def prepare_dataframe(df):
@@ -73,7 +73,7 @@ df_joined = join_dataframes(df_prepared)
 df_final = create_final_dataframe(df_joined)
 
 # From df to glue dynamic frame
-MyDynamicFrame = DynamicFrame.fromDF(df_final, glueContext, "glue_etl")
+glue_dynamic_frame_final = DynamicFrame.fromDF(df_final, glueContext, "glue_etl")
 
 # Example: Write the data in the DynamicFrame to a location in Amazon S3 and a table for it in the AWS Glue Data Catalog
 s3output = glueContext.getSink(
@@ -91,6 +91,6 @@ s3output.setCatalogInfo(
 )
 
 s3output.setFormat("glueparquet")
-s3output.writeFrame(MyDynamicFrame)
+s3output.writeFrame(glue_dynamic_frame_final)
 
 job.commit()
