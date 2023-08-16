@@ -6,4 +6,3 @@
 
 ![image](https://github.com/dogukannulu/glue_etl_job_data_catalog_s3/assets/91257958/91651b5f-3f47-4c74-a8ea-f0679180c048)
 
-
